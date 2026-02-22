@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechScale — AI Systems That Run Your Business</title>
+    <meta name="description" content="TechScale builds production AI systems — autonomous agents, intelligent platforms, and scalable infrastructure for healthcare, life sciences, and enterprise.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-elevated: #111111;
+            --bg-card: #161616;
+            --border: #1e1e1e;
+            --border-hover: #2a2a2a;
+            --text-primary: #e8e8e8;
+            --text-secondary: #888888;
+            --text-muted: #555555;
+            --accent: #c8a86e;
+            --accent-dim: rgba(200, 168, 110, 0.12);
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'DM Sans', -apple-system, sans-serif;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.9rem 2.5rem;
+        }
+
+        .nav-logo img {
+            height: 32px;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            display: inline-block;
+            padding: 0.6rem 1.6rem;
+            background: transparent;
+            color: var(--accent) !important;
+            border: 1px solid var(--accent);
+            font-size: 0.78rem !important;
+            letter-spacing: 0.08em !important;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            color: var(--bg) !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 22px;
+            height: 1.5px;
+            background: var(--text-secondary);
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2.5rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(200, 168, 110, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(2.8rem, 6vw, 5.5rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            max-width: 800px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.4s;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.6s;
+        }
+
+        .hero-cta {
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.8s;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2.8rem;
+            background: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #d4b87a;
+            transform: translateY(-1px);
+        }
+
+        .hero-line {
+            position: absolute;
+            bottom: 0;
+            left: 2.5rem;
+            right: 2.5rem;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Section base ── */
+        section {
+            padding: 7rem 2.5rem;
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .section-heading {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            max-width: 700px;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-sub {
+            color: var(--text-secondary);
+            max-width: 580px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+        }
+
+        /* ── Problem ── */
+        .problem {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .problem-text {
+            font-family: var(--serif);
+            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 750px;
+            font-style: italic;
+        }
+
+        .problem-text strong {
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        /* ── Services ── */
+        .services {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .service-card {
+            background: var(--bg);
+            padding: 3rem 2.5rem;
+            transition: background 0.3s;
+        }
+
+        .service-card:hover {
+            background: var(--bg-elevated);
+        }
+
+        .service-number {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 1.8rem;
+            font-weight: 400;
+        }
+
+        .service-card h3 {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        /* ── Work ── */
+        .work {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .work-card {
+            background: var(--bg);
+            padding: 3rem 2.5rem;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .work-card:hover {
+            background: var(--bg-elevated);
+        }
+
+        .work-metric {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            font-style: italic;
+        }
+
+        .work-card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .work-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.75;
+        }
+
+        /* ── About ── */
+        .about {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .about-text {
+            font-size: 1.08rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            line-height: 1.85;
+        }
+
+        /* ── How We Work ── */
+        .process {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+        }
+
+        .process-item {
+            position: relative;
+        }
+
+        .process-num {
+            font-family: var(--serif);
+            font-size: 3rem;
+            color: var(--accent-dim);
+            line-height: 1;
+            margin-bottom: 1.2rem;
+            color: rgba(200, 168, 110, 0.2);
+        }
+
+        .process-item h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.7rem;
+            color: var(--text-primary);
+        }
+
+        .process-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.75;
+        }
+
+        /* ── Contact ── */
+        .contact {
+            text-align: center;
+            padding: 8rem 2.5rem;
+        }
+
+        .contact .section-heading {
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1rem;
+        }
+
+        .contact-sub {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1rem;
+        }
+
+        /* ── Contact Form ── */
+        .contact-form {
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group .required {
+            color: #c75c5c;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            border-color: var(--border-hover);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #d4b87a;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 2.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--text-secondary);
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.97);
+                padding: 2rem 1.5rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .mobile-toggle { display: block; }
+            .hero { padding: 7rem 1.5rem 5rem; }
+            section { padding: 5rem 1.5rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .work-grid { grid-template-columns: 1fr; }
+            .process-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            footer { flex-direction: column; gap: 0.8rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <a href="#" class="nav-logo">
+            <img src="assets/techscale-logo.png" alt="TechScale">
+        </a>
+        <div class="nav-links" id="navLinks">
+            <a href="#services">Services</a>
+            <a href="#work">Work</a>
+            <a href="#process">Approach</a>
+            <a href="#contact" class="nav-cta">Get in Touch</a>
+        </div>
+        <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <p class="hero-eyebrow">TechScale</p>
+        <h1>We Build the AI Systems<br>Your Business <em>Runs On</em></h1>
+        <p class="hero-sub">TechScale partners with enterprise and growth-stage companies to design, build, and deploy production AI &mdash; from autonomous agents to intelligent platforms.</p>
+        <div class="hero-cta">
+            <a href="#contact" class="btn-primary">Get in Touch</a>
+        </div>
+        <div class="hero-line"></div>
+    </section>
+
+    <!-- Problem -->
+    <section class="problem reveal">
+        <p class="section-label">The Challenge</p>
+        <p class="problem-text">
+            Most AI initiatives stall between prototype and production. Pilots that impressed the board sit untouched. Internal teams are stretched thin. <strong>You need someone who&rsquo;s shipped this before &mdash; at scale, in regulated industries, under real constraints.</strong>
+        </p>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <p class="section-label reveal">What We Do</p>
+        <h2 class="section-heading reveal">Focused expertise.<br>Measurable outcomes.</h2>
+        <p class="section-sub reveal">We don&rsquo;t do everything. We do three things exceptionally well.</p>
+        <div class="services-grid reveal">
+            <div class="service-card">
+                <p class="service-number">01</p>
+                <h3>AI Agents & Intelligent Systems</h3>
+                <p>Autonomous agents that monitor, analyze, and act on your data. Not chatbots &mdash; systems that replace entire workflows and get smarter over time.</p>
+            </div>
+            <div class="service-card">
+                <p class="service-number">02</p>
+                <h3>AI Strategy & Architecture</h3>
+                <p>Advisory for leaders navigating build-vs-buy, model selection, data strategy, and compliance. Informed by two decades of hands-on delivery in regulated industries.</p>
+            </div>
+            <div class="service-card">
+                <p class="service-number">03</p>
+                <h3>Production AI Platforms</h3>
+                <p>End-to-end design and deployment of AI-powered platforms for healthcare, life sciences, and enterprise &mdash; built for real users, real compliance, and real scale.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work -->
+    <section class="work" id="work">
+        <p class="section-label reveal">Select Engagements</p>
+        <h2 class="section-heading reveal">Outcomes, not outputs.</h2>
+        <p class="section-sub reveal">A sample of recent engagements across industries.</p>
+        <div class="work-grid reveal">
+            <div class="work-card">
+                <p class="work-metric">Zero to production in 12 weeks</p>
+                <h3>Agentic Research Terminal</h3>
+                <p>Multi-user AI platform where each user runs custom agents for real-time signal detection across thousands of expert transcripts. Full-stack design through deployment.</p>
+            </div>
+            <div class="work-card">
+                <p class="work-metric">Continuous self-improvement</p>
+                <h3>Self-Learning AI Systems</h3>
+                <p>Intelligent document processing system for healthcare that learns from expert feedback, with multi-tier quality validation and automated accuracy improvement.</p>
+            </div>
+            <div class="work-card">
+                <p class="work-metric">55% cost reduction</p>
+                <h3>Cloud Infrastructure Optimizations</h3>
+                <p>Infrastructure audit and optimization for a major academic research institution &mdash; significant reduction in cloud spend while improving performance for 100+ researchers.</p>
+            </div>
+            <div class="work-card">
+                <p class="work-metric">60&ndash;70% volume reduction</p>
+                <h3>AI Intelligence Platform</h3>
+                <p>AI orchestration layer powering large-scale enterprise communications (40M+ interactions annually), designed to dramatically reduce noise while increasing engagement and decision quality through intelligent prioritization, contextual reasoning, and agent-driven workflows.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about reveal">
+        <p class="section-label">Who We Are</p>
+        <p class="about-text">
+            TechScale is led by senior technologists with decades of experience across fundamental research, pharmaceutical R&D, and enterprise AI. We&rsquo;ve spent our careers at the intersection of science and production systems &mdash; building platforms trusted by leading academic medical centers, pharmaceutical companies, and enterprise organizations.
+        </p>
+    </section>
+
+    <!-- Process -->
+    <section class="process" id="process">
+        <p class="section-label reveal">How We Work</p>
+        <h2 class="section-heading reveal">Senior-led. No hand-offs.</h2>
+        <div class="process-grid reveal">
+            <div class="process-item">
+                <p class="process-num">01</p>
+                <h3>Discovery & Strategy</h3>
+                <p>Every engagement starts with understanding your business, constraints, and desired outcome. No templates. No assumptions.</p>
+            </div>
+            <div class="process-item">
+                <p class="process-num">02</p>
+                <h3>Hands-on Delivery</h3>
+                <p>The person you speak with is the person who builds. Senior-led execution from architecture through deployment.</p>
+            </div>
+            <div class="process-item">
+                <p class="process-num">03</p>
+                <h3>Lasting Impact</h3>
+                <p>We transfer knowledge, document systems, and leave your team stronger. We build partnerships, not dependencies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2 class="section-heading reveal">Get in Touch</h2>
+        <p class="contact-sub reveal">We take on a limited number of engagements to ensure every client gets our full attention.</p>
+        <form class="contact-form reveal" id="contactForm" action="#" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstname" placeholder="Write here" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastname" placeholder="Write here" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="Write here" required>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company name</label>
+                    <input type="text" id="company" name="company" placeholder="Company">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="jobRole">Job Role</label>
+                <select id="jobRole" name="jobrole">
+                    <option value="">Please Select</option>
+                    <option value="Executive">Executive</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Director">Director</option>
+                    <option value="VP">VP</option>
+                    <option value="C-Level">C-Level</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Write here"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 TechScale LLC. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+        reveals.forEach(el => observer.observe(el));
+
+        // Nav shrink on scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Mailto form handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fd = new FormData(this);
+            const params = new URLSearchParams();
+            for (const [k, v] of fd.entries()) {
+                if (v) params.append(k, v);
+            }
+            const body = [
+                'First Name: ' + (fd.get('firstname') || ''),
+                'Last Name: ' + (fd.get('lastname') || ''),
+                'Email: ' + (fd.get('email') || ''),
+                'Company: ' + (fd.get('company') || ''),
+                'Job Role: ' + (fd.get('jobrole') || ''),
+                'Message: ' + (fd.get('message') || '')
+            ].join('\n');
+            const mailto = 'mailto:support@techscaleglobal.com?subject=Contact%20from%20TechScale%20website&body=' + encodeURIComponent(body);
+            window.location.href = mailto;
+        });
+    </script>
+
+</body>
+</html>
