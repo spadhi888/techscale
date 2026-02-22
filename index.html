@@ -729,7 +729,9 @@
     <section class="contact" id="contact">
         <h2 class="section-heading reveal">Get in Touch</h2>
         <p class="contact-sub reveal">We take on a limited number of engagements to ensure every client gets our full attention.</p>
-        <form class="contact-form reveal" id="contactForm" action="#" method="post">
+        <form class="contact-form reveal" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="70b433f9-d53f-4e72-9415-70d92a541d41">
+            <input type="hidden" name="subject" value="Contact from TechScale website">
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstName">First Name <span class="required">*</span></label>
@@ -790,26 +792,6 @@
         // Nav shrink on scroll
         window.addEventListener('scroll', () => {
             document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Mailto form handler
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const fd = new FormData(this);
-            const params = new URLSearchParams();
-            for (const [k, v] of fd.entries()) {
-                if (v) params.append(k, v);
-            }
-            const body = [
-                'First Name: ' + (fd.get('firstname') || ''),
-                'Last Name: ' + (fd.get('lastname') || ''),
-                'Email: ' + (fd.get('email') || ''),
-                'Company: ' + (fd.get('company') || ''),
-                'Job Role: ' + (fd.get('jobrole') || ''),
-                'Message: ' + (fd.get('message') || '')
-            ].join('\n');
-            const mailto = 'mailto:support@techscaleglobal.com?subject=Contact%20from%20TechScale%20website&body=' + encodeURIComponent(body);
-            window.location.href = mailto;
         });
     </script>
 
